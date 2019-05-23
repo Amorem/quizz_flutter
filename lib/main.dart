@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quizzler/question.dart';
+import 'package:quizzler/quizBrain.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,26 +25,22 @@ class QuizPage extends StatefulWidget {
   _QuizPageState createState() => _QuizPageState();
 }
 
+QuizBrain quizBrain = QuizBrain();
+
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  List<Question> questions = [
-    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
-    Question(
-        q: 'Approximately one quarter of human bones are in the feet.',
-        a: true),
-    Question(q: 'A slug\'s blood is green.', a: true)
-  ];
+  
   int questionsIndex = 0;
 
   void updateProgress() {
-    if (questionsIndex < questions.length - 1)
+    if (questionsIndex < quizBrain.questions.length - 1)
       setState(() {
         questionsIndex = questionsIndex + 1;
       }) else {questionsIndex = questionsIndex;}
   }
 
   bool isCorrect(bool userAnswer) {
-    if (userAnswer == questions[questionsIndex].questionAnswer) {
+    if (userAnswer == quizBrain.questions[questionsIndex].questionAnswer) {
       scoreKeeper.add(Icon(
         Icons.mood,
         color: Colors.green,
@@ -71,7 +67,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[questionsIndex].questionText,
+                quizBrain.questions[questionsIndex].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
