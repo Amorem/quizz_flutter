@@ -29,29 +29,22 @@ QuizBrain quizBrain = QuizBrain();
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
-  
-  int questionsIndex = 0;
 
-  void updateProgress() {
-    if (questionsIndex < quizBrain.questions.length - 1)
+  void isCorrect(bool userAnswer) {
+    if (userAnswer == quizBrain.getAnswerBool()) {
       setState(() {
-        questionsIndex = questionsIndex + 1;
-      }) else {questionsIndex = questionsIndex;}
-  }
-
-  bool isCorrect(bool userAnswer) {
-    if (userAnswer == quizBrain.questions[questionsIndex].questionAnswer) {
-      scoreKeeper.add(Icon(
-        Icons.mood,
-        color: Colors.green,
-      ));
-      return true;
+        scoreKeeper.add(Icon(
+          Icons.mood,
+          color: Colors.green,
+        ));
+      });
     } else {
-      scoreKeeper.add(Icon(
-        Icons.mood_bad,
-        color: Colors.red,
-      ));
-      return false;
+      setState(() {
+        scoreKeeper.add(Icon(
+          Icons.mood_bad,
+          color: Colors.red,
+        ));
+      });
     }
   }
 
@@ -67,7 +60,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quizBrain.questions[questionsIndex].questionText,
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -93,7 +86,6 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked true.
                 isCorrect(true);
-                updateProgress();
               },
             ),
           ),
@@ -113,7 +105,6 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 //The user picked false.
                 isCorrect(false);
-                updateProgress();
               },
             ),
           ),
